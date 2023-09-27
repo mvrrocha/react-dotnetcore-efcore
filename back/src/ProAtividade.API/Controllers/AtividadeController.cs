@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProAtividade.API.Models;
 using ProAtividade.API.Data;
@@ -15,8 +14,7 @@ namespace ProAtividade.API.Controllers
         private readonly DataContext _context;
         public AtividadeController(DataContext context)
         {
-            _context = context;
-            
+            _context = context;            
         }
 
         [HttpGet]
@@ -30,11 +28,11 @@ namespace ProAtividade.API.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<Atividade> Post(Atividade atividade) {
+        public Atividade Post(Atividade atividade) {
             _context.Atividades.Add(atividade);
 
             if (_context.SaveChanges() > 0)
-                return _context.Atividades;
+                return _context.Atividades.FirstOrDefault(a => a.Id == atividade.Id);
             else
                 throw new Exception("Você não conseguiu adicionar a atividade");
         }
